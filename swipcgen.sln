@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "swipcgen", "swipcgen\swipcgen.csproj", "{BC155FB2-84AD-49AB-9BBB-D2755EA6DFB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BC155FB2-84AD-49AB-9BBB-D2755EA6DFB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC155FB2-84AD-49AB-9BBB-D2755EA6DFB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC155FB2-84AD-49AB-9BBB-D2755EA6DFB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC155FB2-84AD-49AB-9BBB-D2755EA6DFB4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {46C7A3D1-A34F-4F2D-AD28-32AEC0BE3E61}
+	EndGlobalSection
+EndGlobal
