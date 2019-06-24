@@ -11,11 +11,10 @@ namespace swipcgen
 
         public string Source { get; set; }
 
-        public void Save(string IDPath)
+        public void Save(string Header, string Source)
         {
-            string outbase = Path.GetDirectoryName(IDPath) + "\\" + Path.GetFileNameWithoutExtension(IDPath);
-            File.WriteAllText(outbase + ".h", Header);
-            File.WriteAllText(outbase + ".c", "#include \"" + Path.GetFileNameWithoutExtension(IDPath) + ".h\"\n\n" + Source);
+            File.WriteAllText(Header, this.Header);
+            File.WriteAllText(Source, "#include \"" + Path.GetFileNameWithoutExtension(Source) + ".h\"\n\n" + this.Source);
         }
     }
 }

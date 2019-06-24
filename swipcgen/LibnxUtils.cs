@@ -29,19 +29,19 @@ namespace swipcgen
 
         public static string MakeInterfaceServiceBaseHeader(Interface Iface)
         {
-            if(Iface.IsService)
+            string code = "// " + Iface.NnName + "\n";
+            if (Iface.IsService)
             {
                 string normalizedsrv = Iface.FormattedName;
 
-                string code = "Result " + normalizedsrv + "_Init();\n";
+                code += "Result " + normalizedsrv + "_Initialize();\n";
                 code += "void " + normalizedsrv + "_Exit();";
-
-                return code;
             }
             else
             {
-                return "typedef struct {\n    Service s;\n} " + Iface.FormattedNnName + ";";
+                code += "typedef struct {\n    Service s;\n} " + Iface.FormattedNnName + ";";
             }
+            return code;
         }
 
         public static string MakeInterfaceServiceBaseSource(Interface Iface)
@@ -52,12 +52,13 @@ namespace swipcgen
 
                 string code = "static Service g_" + normalizedsrv + "_ISrv;\nstatic u64 g_" + normalizedsrv + "_RefCnt;\n\n";
 
-                code += "Result " + normalizedsrv + "_Init()"; code += "\n";
+                code += "Result " + normalizedsrv + "_Initialize()"; code += "\n";
                 code += "{"; code += "\n";
                 code += "    atomicIncrement64(&g_" + normalizedsrv + "_RefCnt);"; code += "\n";
                 code += "    if(serviceIsActive(&g_" + normalizedsrv + "_ISrv)) { return 0; }"; code += "\n";
                 if(Iface.IsManagedPort)
                 {
+                    code += "    // Workaround for managed ports"; code += "\n";
                     code += "    Result rc = svcConnectToNamedPort(&g_" + normalizedsrv + "_ISrv.handle, \"" + Iface.ServiceName + "\");"; code += "\n";
                     code += "    if(R_SUCCEEDED(rc)) { &g_" + normalizedsrv + "_ISrv.object_id = IPC_INVALID_OBJECT_ID; &g_" + normalizedsrv + "_ISrv.type = ServiceType_Normal; }";
                     code += "    return rc;";
@@ -80,6 +81,7 @@ namespace swipcgen
             string code = "";
             foreach(var t in Static.CustomTypes)
             {
+                code += "// " + t.Name + "\n";
                 if((t.EqType != null) && !string.IsNullOrEmpty(t.EqType.CName))
                 {
                     code += "typedef " + t.EqType.CName + " " + t.CName + ";";

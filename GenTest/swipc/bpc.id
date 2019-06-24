@@ -1,0 +1,4 @@
+interface nn::bpc::IBoardPowerControlManager is bpc {
+    [0] ShutdownSystem();
+    [1] RebootSystem();
+}

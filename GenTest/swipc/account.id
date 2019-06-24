@@ -1,0 +1,7 @@
+type nn::account::Uid = u128;
+
+interface nn::account::IAccountServiceForApplication is acc:u0 {
+    [0] GetUserCount() -> u32 count;
+    [1] GetUserExistence(nn::account::Uid) -> b8;
+    [4] GetLastOpenedUser() -> nn::account::Uid;
+}

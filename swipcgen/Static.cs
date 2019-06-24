@@ -12,11 +12,13 @@ namespace swipcgen
             new Type { Name = "u16", CName = "u16", Bytes = 2 },
             new Type { Name = "u32", CName = "u32", Bytes = 4 },
             new Type { Name = "u64", CName = "u64", Bytes = 8 },
+            new Type { Name = "u128", CName = "u128", Bytes = 16 },
             new Type { Name = "i8", CName = "s8", Bytes = 1 },
             new Type { Name = "i16", CName = "s16", Bytes = 2 },
             new Type { Name = "i32", CName = "s32", Bytes = 4 },
             new Type { Name = "i64", CName = "s64", Bytes = 8 },
             new Type { Name = "b8", CName = "bool", Bytes = 1 },
+            new Type { Name = "bool", CName = "bool", Bytes = 1 },
             new Type { Name = "f32", CName = "f32", Bytes = 4 },
         };
 

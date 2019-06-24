@@ -1,0 +1,9 @@
+
+interface nn::mii::detail::IDatabaseService {
+    [1] IsFullDatabase() -> b8;
+    [2] GetCount(u32) -> u32 count;
+}
+
+interface nn::mii::detail::IStaticService is mii:u {
+    [0] GetDatabaseService(u32) -> object<nn::mii::detail::IDatabaseService>;
+}

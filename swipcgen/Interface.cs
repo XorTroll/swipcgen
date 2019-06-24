@@ -49,12 +49,15 @@ namespace swipcgen
             string code = LibnxUtils.MakeInterfaceServiceBaseHeader(this) + "\n\n";
             foreach (var c in Commands)
             {
-                string cmd = "Result ";
-                if(IsService) cmd += FormattedName + "_";
+                string cmd = "// [" + c.Id + "] " + NnName + "->" + c.Name + "\n";
+                cmd += "Result ";
+                if (IsService) cmd += FormattedName + "_";
                 else cmd += FormattedNnName + "_";
                 cmd += c.Name + "(";
                 if (!IsService) cmd += FormattedNnName + " *session";
                 uint incounter = 0;
+                uint outcounter = 0;
+                uint ioutcounter = 0;
                 if (c.InRawTypes.Count > 0)
                 {
                     if (!IsService) cmd += ", ";
@@ -62,29 +65,63 @@ namespace swipcgen
                     {
                         if (irt.ArgType.IsValid) cmd += irt.ArgType.CName + " ";
                         else cmd += "u8 *";
-                        cmd += "in_" + incounter;
+                        if (string.IsNullOrEmpty(irt.Name))
+                        {
+                            cmd += "in_" + incounter;
+                            incounter++;
+                        }
+                        else cmd += irt.Name;
                         cmd += ", ";
-                        incounter++;
                     }
                     cmd = cmd.Substring(0, cmd.Length - 2);
                 }
-                cmd += ");"; cmd += "\n";
-                code += cmd + "\n";
+                if (c.OutRawTypes.Count > 0)
+                {
+                    foreach (var rawt in c.OutRawTypes)
+                    {
+                        if (cmd.Last() != '(') cmd += ", ";
+                        if (rawt.ArgType.IsValid) cmd += rawt.ArgType.CName + " *";
+                        else cmd += "u8 *";
+                        if (string.IsNullOrEmpty(rawt.Name))
+                        {
+                            cmd += "out_" + outcounter;
+                            outcounter++;
+                        }
+                        else cmd += rawt.Name;
+                    }
+                }
+                if (c.OutInterfaces.Count > 0)
+                {
+                    foreach (var intf in c.OutInterfaces)
+                    {
+                        cmd += ", ";
+                        cmd += intf.ArgType.FormattedNnName + " *";
+                        if (string.IsNullOrEmpty(intf.Name))
+                        {
+                            cmd += "iout_" + ioutcounter;
+                            ioutcounter++;
+                        }
+                        else cmd += intf.Name;
+                    }
+                }
+                cmd += ");\n";
+                code += cmd;
             }
+            code = code.Substring(0, code.Length - 1);
             return code;
         }
-
 
         public string GenerateSource()
         {
             string code = LibnxUtils.MakeInterfaceServiceBaseSource(this) + "\n\n";
             foreach(var c in Commands)
             {
-                string cmd = "Result ";
-                if(IsService) cmd += FormattedName + "_";
+                string cmd = "// [" + c.Id + "] " + NnName + "->" + c.Name + "\n";
+                cmd += "Result ";
+                if (IsService) cmd += FormattedName + "_";
                 else cmd += FormattedNnName + "_";
                 cmd += c.Name + "(";
-                if(!IsService) cmd += FormattedNnName + "* session";
+                if(!IsService) cmd += FormattedNnName + " *session";
                 uint incounter = 0;
                 uint outcounter = 0;
                 uint ioutcounter = 0;
@@ -109,7 +146,7 @@ namespace swipcgen
                 {
                     foreach(var rawt in c.OutRawTypes)
                     {
-                        cmd += ", ";
+                        if(cmd.Last() != '(') cmd += ", ";
                         if (rawt.ArgType.IsValid) cmd += rawt.ArgType.CName + " *";
                         else cmd += "u8 *";
                         if (string.IsNullOrEmpty(rawt.Name))
@@ -216,7 +253,7 @@ namespace swipcgen
                             cmd += "            if(";
                             if (string.IsNullOrEmpty(rawt.Name))
                             {
-                                cmd += "iout_" + outcounter;
+                                cmd += "out_" + outcounter;
                             }
                             else cmd += rawt.Name;
                             cmd += ")";
